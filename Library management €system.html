@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Library Management System</title>
+    <link rel="stylesheet" href="styles.css"> <!-- Link to external CSS -->
+</head>
+<body>
+    <header>
+        <h1>Library Management System</h1>
+    </header>
+
+    <nav>
+        <ul>
+            <li><a href="#" data-section="dashboard">Dashboard</a></li>
+            <li><a href="#" data-section="manageBooks">Manage Books</a></li>
+            <li><a href="#" data-section="manageUsers">Manage Users</a></li>
+            <li><a href="#" data-section="borrowReturn">Borrow/Return Books</a></li>
+        </ul>
+    </nav>
+
+    <main>
+        <section id="dashboard" class="active">
+            <h2>Dashboard</h2>
+            <div class="dashboard-cards">
+                <div class="card">
+                    <h3>Total Books</h3>
+                    <p id="totalBooks">0</p>
+                </div>
+                <div class="card">
+                    <h3>Borrowed Books</h3>
+                    <p id="borrowedBooks">0</p>
+                </div>
+                <div class="card">
+                    <h3>Registered Users</h3>
+                    <p id="registeredUsers">0</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="manageBooks">
+            <h2>Manage Books</h2>
+            <select id="sortCriteria" onchange="sortBooks()">
+                <option value="title">Sort by Title</option>
+                <option value="author">Sort by Author</option>
+            </select>
+            <input type="text" id="searchInput" placeholder="Search for books...">
+            <button onclick="searchBooks()">Search Books</button>
+            <button onclick="addBook()">Add New Book</button>
+            <div id="bookList"></div>
+
+            <div id="paginationControls">
+                <button onclick="prevPage()">Previous</button>
+                <span id="pageInfo"></span>
+                <button onclick="nextPage()">Next</button>
+            </div>
+        </section>
+
+        <section id="manageUsers">
+            <h2>Manage Users</h2>
+            <button onclick="addUser()">Add User</button>
+            <div id="userList"></div>
+        </section>
+
+        <section id="borrowReturn">
+            <h2>Borrow/Return Books</h2>
+            <input type="text" id="borrowSearchInput" placeholder="Search for books to borrow...">
+            <button onclick="searchBorrowableBooks()">Search Books</button>
+            <div id="borrowReturnSection"></div>
+        </section>
+
+        <section id="bookDetails" style="display:none;">
+            <h2>Book Details</h2>
+            <div id="bookDetailInfo"></div>
+            <button onclick="showSection('manageBooks');">Back to Manage Books</button>
+        </section>
+    </main>
+
+    <script src="script.js"></script> 
+
+    <script>
+        // Event listeners for navigation links
+        document.querySelectorAll('nav ul li a').forEach(link => {
+            link.addEventListener('click', (event) => {
+                event.preventDefault(); // Prevent default link behavior
+                const sectionId = event.target.getAttribute('data-section');
+                showSection(sectionId);
+
+                // Call other display functions based on the section
+                if (sectionId === 'manageBooks') displayBooks();
+                if (sectionId === 'manageUsers') displayUsers();
+                if (sectionId === 'borrowReturn') displayBorrowableBooks();
+            });
+        });
+
+        // Initialize borrow/return section when the page first loads
+        displayBorrowableBooks();
+    </script>
+</body>
+</html>
